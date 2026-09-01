@@ -1,0 +1,49 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: especies-animales-extincion
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fauna_extincion
+    username: root
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      # validate: Hibernate NO crea tablas, solo verifica que las entidades
+      # coincidan con el esquema creado por Flyway. El esquema es codigo
+      # versionado en Git, no un efecto secundario del arranque.
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          batch_size: 30
+    open-in-view: false
+    show-sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 30MB
+
+app:
+  jwt:
+    secret: cambiar-esta-clave-por-una-de-al-menos-32-caracteres-en-produccion
+    expiracion-ms: 3600000            # 1 hora
+    refresh-expiracion-ms: 604800000  # 7 dias
+  multimedia:
+    directorio-base: ./almacenamiento/multimedia
+    tipos-permitidos: image/jpeg,image/png,image/webp
+
+logging:
+  level:
+    org.hibernate.SQL: debug
